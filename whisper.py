@@ -3,11 +3,12 @@ from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
-client = Groq(
-    api_key = os.getenv("GROQ_API_KEY")
-)
 
 def transcribe_audio(file_path):
+    client = Groq(
+    api_key = os.getenv("GROQ_API_KEY")
+    )
+
     with open(file_path, "rb") as file:
         transcription = client.audio.transcriptions.create(
             file=file,
