@@ -4,7 +4,7 @@ from WORK_ON_THIS_ONE import final_transcript
 
 RTTM_PATH = "audio.rttm"
 
-def run_interview(url, interviewer_name, interviewee_name):
+def run_interview(url):
     print("downloading audio...")
     dir, AUDIO_PATH = download.download_audio_only(url, save_to_disk=True)
 
