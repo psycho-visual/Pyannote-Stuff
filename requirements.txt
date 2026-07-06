@@ -6,4 +6,3 @@ yt-dlp==2026.6.9
 
 # unpinned on purpose: colab preinstalls a GPU-matched build,
 # and the local "+cu126" version string doesn't exist on PyPI
-torch
