@@ -11,6 +11,7 @@ def download_audio_only(url, save_to_disk=False):
         output_dir = tempfile.mkdtemp()
     outtmpl_path = os.path.join(output_dir, 'audio.%(ext)s')
     ydl_opts = {
+        'extractor_args': {'youtube': {'player_client': ['tv', 'web_safari']}},
         'format': 'bestaudio/best',
         'outtmpl': outtmpl_path,
         'postprocessors': [{
