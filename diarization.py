@@ -24,7 +24,7 @@ def diarize_audio(audio_path):
     from pyannote.audio.pipelines.utils.hook import ProgressHook
     import torch
 
-    os.environ["HF_HOME"] = "./pyannote_weights"
+    os.environ.setdefault("HF_HOME", "./pyannote_weights")
     pipeline = Pipeline.from_pretrained(
         "pyannote/speaker-diarization-3.1",
         token=os.getenv("HF_PYANNOTE_TOKEN")
