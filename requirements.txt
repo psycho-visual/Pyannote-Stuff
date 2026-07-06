@@ -1,0 +1,9 @@
+# core pipeline
+pyannote.audio==4.0.6
+groq==1.5.0
+python-dotenv==1.2.2
+yt-dlp==2026.6.9
+
+# unpinned on purpose: colab preinstalls a GPU-matched build,
+# and the local "+cu126" version string doesn't exist on PyPI
+torch

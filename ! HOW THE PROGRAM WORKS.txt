@@ -1,0 +1,7 @@
+DONE: 1) input a youtube video url
+DONE: 2) download the youtube video, extract and store the audio
+DONE: 3) diarize the audio
+DONE: 4) use the diarizations to split the audio into smaller chunks (for whisper API)
+DONE: 5) feed the smaller chunks one by one into whisper, and store each chunk's transcription in one big list
+6) merge the transcriptions back into one master list
+7) match the transcriptions up against diarizations

@@ -1,0 +1,29 @@
+# secrets — never commit these
+.env
+
+# python junk
+.venv/
+__pycache__/
+
+# downloaded model weights (re-downloadable, huge)
+pyannote_weights/
+
+# audio files (too big for git)
+*.wav
+*.mp3
+
+# extraneous stuff
+amelia interview.mp3
+audio_downscaled.wav
+audio.rttm
+audio.wav
+deepseek_grammar_fix.py
+diarization_detail.png
+diarization_overview.png
+duration_times.txt
+full_transcription.json
+onset_times.txt
+plot_diarization_test.py
+TEST_WITH_THIS_ONE.py
+whisper_json.json
+
