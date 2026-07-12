@@ -24,18 +24,17 @@ def to_wav(audio_path):
 
 def process_audio(AUDIO_PATH):
     AUDIO_PATH = to_wav(AUDIO_PATH)   # <-- add this one line
-    print("running diarization...")
-    annotation = diarization.diarize_audio(AUDIO_PATH)
-    # pyannote fills annotation.uri from the filename and writes it into the
-    # space-separated RTTM, so a name with spaces makes write_rttm error out.
-    # we only read onset/duration/speaker back, so a fixed uri is fine.
-    annotation.uri = "audio"
-    with open(RTTM_PATH, "w") as rttm:
-        annotation.write_rttm(rttm)
 
-    # this pulls some data out of the rttm
-    print("parsing...")
-    onset_list, duration_list, speaker_list = diarization.parse_rttm(RTTM_PATH)
+    # if a prepared rttm is sitting in the directory, use it (handy for
+    # debugging); otherwise diarize fresh and read it straight from memory.
+    # either way we never write the rttm to disk.
+    if os.path.exists(RTTM_PATH):
+        print(f"found existing {RTTM_PATH}, skipping diarization...")
+        onset_list, duration_list, speaker_list = diarization.parse_rttm(RTTM_PATH)
+    else:
+        print("running diarization...")
+        annotation = diarization.diarize_audio(AUDIO_PATH)
+        onset_list, duration_list, speaker_list = diarization.parse_annotation(annotation)
 
     # timestamps to split the audio at to fit whisper's 25mb limit
     print("getting timestamps to split at...")

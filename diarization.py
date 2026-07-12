@@ -48,6 +48,19 @@ def parse_rttm(rttm_path):
             speaker_list.append(split_line[Rttm.SPEAKER])
     return onset_list, duration_list, speaker_list
 
+def parse_annotation(annotation):
+    # same three lists parse_rttm returns, but read straight from the pyannote
+    # annotation instead of a file on disk. itertracks yields segments in the
+    # same chronological order write_rttm would have written them.
+    onset_list = []
+    duration_list = []
+    speaker_list = []
+    for segment, _, speaker in annotation.itertracks(yield_label=True):
+        onset_list.append(segment.start)
+        duration_list.append(segment.duration)
+        speaker_list.append(speaker)
+    return onset_list, duration_list, speaker_list
+
 def combine_authors(onset_list, duration_list, speaker_list, min_duration=0.04):
     combined_list = []
     current_speaker = None
