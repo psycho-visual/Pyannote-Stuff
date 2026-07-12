@@ -3,6 +3,13 @@ import diarization, whisper, processing
 from WORK_ON_THIS_ONE import final_transcript
 
 RTTM_PATH = "audio.rttm"
+TRANSCRIPT_PATH = "interview_transcript.txt"
+
+def save_transcript(transcript_list, path=TRANSCRIPT_PATH):
+    # transcript_list is a list of (speaker, text) turns from final_transcript
+    with open(path, "w", encoding="utf-8") as file:
+        for speaker, text in transcript_list:
+            file.write(f"Speaker {speaker}: {text}\n")
 
 def to_wav(audio_path):
     # convert anything (mp3, m4a, etc.) to 16kHz mono wav for pyannote
@@ -19,6 +26,10 @@ def process_audio(AUDIO_PATH):
     AUDIO_PATH = to_wav(AUDIO_PATH)   # <-- add this one line
     print("running diarization...")
     annotation = diarization.diarize_audio(AUDIO_PATH)
+    # pyannote fills annotation.uri from the filename and writes it into the
+    # space-separated RTTM, so a name with spaces makes write_rttm error out.
+    # we only read onset/duration/speaker back, so a fixed uri is fine.
+    annotation.uri = "audio"
     with open(RTTM_PATH, "w") as rttm:
         annotation.write_rttm(rttm)
 
@@ -47,7 +58,11 @@ def process_audio(AUDIO_PATH):
     combined_diarization_list = diarization.combine_authors(onset_list, duration_list, speaker_list)
 
     print("assembling final transcript...")
-    return final_transcript(full_transcription_list, combined_diarization_list)
+    transcript_list = final_transcript(full_transcription_list, combined_diarization_list)
+
+    print(f"saving transcript to {TRANSCRIPT_PATH}...")
+    save_transcript(transcript_list)
+    return transcript_list
 
 
 def run_interview(url):
