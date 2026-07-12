@@ -12,7 +12,7 @@ def transcribe_audio(file_path):
     with open(file_path, "rb") as file:
         transcription = client.audio.transcriptions.create(
             file=file,
-            model="whisper-large-v3",
+            model="whisper-large-v3-turbo",
             response_format="verbose_json",
             timestamp_granularities=['word'],
         )

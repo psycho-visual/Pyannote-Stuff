@@ -1,10 +1,22 @@
-import download, os, json
+import download, os, json, subprocess
 import diarization, whisper, processing
 from WORK_ON_THIS_ONE import final_transcript
 
 RTTM_PATH = "audio.rttm"
 
+def to_wav(audio_path):
+    # convert anything (mp3, m4a, etc.) to 16kHz mono wav for pyannote
+    root, _ = os.path.splitext(audio_path)
+    wav_path = root + "_16k.wav"
+    subprocess.run(
+        ["ffmpeg", "-y", "-i", audio_path, "-ar", "16000", "-ac", "1", wav_path],
+        check=True,
+        capture_output=True,
+    )
+    return wav_path
+
 def process_audio(AUDIO_PATH):
+    AUDIO_PATH = to_wav(AUDIO_PATH)   # <-- add this one line
     print("running diarization...")
     annotation = diarization.diarize_audio(AUDIO_PATH)
     with open(RTTM_PATH, "w") as rttm:
